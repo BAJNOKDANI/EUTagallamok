@@ -1,5 +1,7 @@
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Feladatok {
     ArrayList<Csatlakozas>lista;
@@ -11,6 +13,8 @@ public class Feladatok {
         ketezerhet();
         MO();
         majus();
+        legutolso();
+        statisztika();
     }
 
     private void beolvasas(){
@@ -67,6 +71,36 @@ public class Feladatok {
     }
 
     private void legutolso(){
+        Csatlakozas datum = lista.get(0);
+        for (Csatlakozas item : lista){
+            if (item.getDatum().isAfter(datum.getDatum())){
+                datum=item;
+            }
+        }
+        System.out.println("Az utoljára belépett tagállam: " + datum.getOrszag() + ", " + datum.getDatum());
+    }
+
+    private void statisztika(){
+        // Kulcs : Év, Value : mennyi
+        HashMap<Integer, Integer> stat = new HashMap<>();
+        for (Csatlakozas item : lista){
+            int kulcs = item.getDatum().getYear();
+            if (!stat.containsKey(kulcs)){
+                stat.put(kulcs, 0);
+            }
+            //stat.putIfAbsent(kulcs, 0); h amég nem volt ilyen kulcs, akkor létrehozza.
+            int value = stat.get(kulcs);
+            stat.put(kulcs, value+1);
+        }
+        for (Integer kulcs : stat.keySet()){
+            if (stat.get(kulcs)>1){
+                System.out.println(kulcs + ": " + stat.get(kulcs));
+            }
+
+        }
+
+
+
 
     }
 }
